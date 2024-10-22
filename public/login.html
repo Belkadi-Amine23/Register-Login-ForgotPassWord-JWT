@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> <!-- Ajout de Tailwind CSS -->
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+  <div class="bg-white shadow-md rounded-lg p-8 w-96">
+    <h2 class="text-2xl font-bold mb-6 text-center">Se connecter</h2>
+    <form id="loginForm">
+      <div class="mb-4">
+        <label for="email" class="block text-gray-700 font-semibold mb-2">Email:</label>
+        <input type="email" id="email" name="email" required class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Entrez votre email">
+      </div>
+
+      <div class="mb-4">
+        <label for="password" class="block text-gray-700 font-semibold mb-2">Mot de passe:</label>
+        <input type="password" id="password" name="password" required class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Entrez votre mot de passe">
+      </div>
+
+      <button type="submit" class="w-full bg-blue-500 text-white font-bold py-2 rounded hover:bg-blue-600 transition duration-200">Connexion</button>
+    </form>
+
+    <p class="mt-4 text-center text-gray-600">
+      Pas encore de compte ? <a href="#" class="text-blue-500 hover:underline">Inscrivez-vous</a>
+    </p>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert('Connexion réussie');
+        window.location.href = '/user/api'; // Rediriger vers l'API après la connexion
+      } else {
+        alert(data.message);
+      }
+    });
+  </script>
+</body>
+</html>
