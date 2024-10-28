@@ -3,42 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> <!-- Ajout de Tailwind CSS -->
+  <title>Inscription</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-
   <div class="bg-white shadow-md rounded-lg p-8 w-96">
-    <h2 class="text-2xl font-bold mb-6 text-center">Se connecter</h2>
-    <form id="loginForm">
+    <h2 class="text-2xl font-bold mb-6 text-center">S'inscrire</h2>
+    <form id="registerForm">
       <div class="mb-4">
         <label for="email" class="block text-gray-700 font-semibold mb-2">Email:</label>
         <input type="email" id="email" name="email" required class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Entrez votre email">
       </div>
-
       <div class="mb-4">
         <label for="password" class="block text-gray-700 font-semibold mb-2">Mot de passe:</label>
         <input type="password" id="password" name="password" required class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Entrez votre mot de passe">
       </div>
-
-      <button type="submit" class="w-full bg-blue-500 text-white font-bold py-2 rounded hover:bg-blue-600 transition duration-200">Connexion</button>
+      <div class="mb-4">
+        <label for="confirmPassword" class="block text-gray-700 font-semibold mb-2">Confirmez le mot de passe:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Confirmez votre mot de passe">
+      </div>
+      <button type="submit" class="w-full bg-blue-500 text-white font-bold py-2 rounded hover:bg-blue-600 transition duration-200">S'inscrire</button>
     </form>
-
-    <p class="mt-4 text-center text-gray-600">
-      Pas encore de compte ? <a href="/register.html" class="text-blue-500 hover:underline">Inscrivez-vous</a>
-    </p>
-    <p class="mt-4 text-center text-gray-600">
-    <a href="/forgot_password.html" class="text-blue-500 hover:underline">Mot de passe oublié</a>
-    </p>
   </div>
 
   <script>
-    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
 
-      const response = await fetch('/login', {
+      if (password !== confirmPassword) {
+        alert('Les mots de passe ne correspondent pas. Veuillez réessayer.');
+        return;
+      }
+
+      const response = await fetch('/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -48,8 +48,8 @@
 
       const data = await response.json();
       if (response.ok) {
-        alert('Connexion réussie');
-        window.location.href = '/user/api'; // Rediriger vers l'API après la connexion
+        alert(data.message);
+        window.location.href = '/';
       } else {
         alert(data.message);
       }
